@@ -17,38 +17,40 @@ private:
 public:
     BattleshipBoard(int _playerNumber) 
     { 
-        initializeBoard();
+        initializeBoard(board);
+        initializeBoard(FogOfWarBoard);
         playerNumber = _playerNumber;
     }
 
     char board[BOARD_SIZE][BOARD_SIZE];
+    char FogOfWarBoard[BOARD_SIZE][BOARD_SIZE];
 
-    void initializeBoard();
-    void displayBoard();
+    void initializeBoard(char someboard[BOARD_SIZE][BOARD_SIZE]);
+    void displayBoard(char someboard[BOARD_SIZE][BOARD_SIZE]);
     void placeShips();
     bool isHit(int x, int y, char board[BOARD_SIZE][BOARD_SIZE]);
     void playTurn(char board[BOARD_SIZE][BOARD_SIZE]);
     bool isDead();
 };
 
-void BattleshipBoard::initializeBoard() 
+void BattleshipBoard::initializeBoard(char someboard[BOARD_SIZE][BOARD_SIZE]) 
 {
     for (int i = 0; i < BOARD_SIZE; i++) 
     {
         for (int j = 0; j < BOARD_SIZE; j++) 
         {
-            board[i][j] = '~';
+            someboard[i][j] = '~';
         }
     }
 }
 
-void BattleshipBoard::displayBoard() 
+void BattleshipBoard::displayBoard(char someboard[BOARD_SIZE][BOARD_SIZE]) 
 {
     for (int i = 0; i < BOARD_SIZE; i++) 
     {
         for (int j = 0; j < BOARD_SIZE; j++) 
         {
-            cout << board[i][j] << " ";
+            cout << someboard[i][j] << " ";
         }
         cout << endl;
     }
@@ -72,7 +74,7 @@ void BattleshipBoard::placeShips()
         }
 
         cout << "Player " << playerNumber << "'s board after placing the ship:" << endl;
-        displayBoard();
+        displayBoard(board);
 
     }
 }
@@ -106,12 +108,14 @@ void BattleshipBoard::playTurn(char board[BOARD_SIZE][BOARD_SIZE])
     {
         cout << "It's a hit!" << endl;
         board[x][y] = 'X';
+        FogOfWarBoard[x][y] = 'X';
         lifePoints--;
     } 
     else 
     {
         cout << "Missed!" << endl;
         board[x][y] = 'O';
+        FogOfWarBoard[x][y] = 'O';
     }
 
 }
@@ -135,20 +139,28 @@ int main() {
     {
         //NOTICE: playTurn lowers the current player's lifePoints, that's why the numeration in win scenarios is swapped
         cout << "Player " << 1 << "'s Turn" << endl;
-        player1.displayBoard();
+        
+        //if you also want to see your own board uncomment this line
+        //player1.displayBoard(player1.board);
+        player1.displayBoard(player1.FogOfWarBoard);
         player1.playTurn(player2.board);
         if (player1.isDead()) 
         {
             cout << "Player 1 wins!" << endl;
+            player1.displayBoard(player2.board);
             break;
         }
 
         cout << "Player " << 2 << "'s Turn" << endl;
-        player2.displayBoard();
+
+        //if you also want to see your own board uncomment this line
+        //player2.displayBoard(player2.board);
+        player2.displayBoard(player2.FogOfWarBoard);
         player2.playTurn(player1.board);
         if (player2.isDead()) 
         {
             cout << "Player 2 wins!" << endl;
+            player2.displayBoard(player1.board);
             break;
         }
     }
