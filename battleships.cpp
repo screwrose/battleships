@@ -22,7 +22,7 @@ public:
         playerNumber = _playerNumber;
     }
 
-    char board[BOARD_SIZE][BOARD_SIZE];         //main game board
+    char board[BOARD_SIZE][BOARD_SIZE]; //main game board
     char FogOfWarBoard[BOARD_SIZE][BOARD_SIZE];//used to display where the player shoudl attack
 
     void initializeBoard(char someboard[BOARD_SIZE][BOARD_SIZE]); //fills board with '~'
